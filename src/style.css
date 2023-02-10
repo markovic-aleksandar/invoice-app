@@ -1,0 +1,82 @@
+/* import font */
+@import url('./vendor/font.css');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --white: #ffffff;
+  --black: #0c0e16;
+  --dark: #1e2139;
+  --grey: #f8f8f8;
+  --semiGrey: #f9fafe;
+  --darkGrey: #888eb0;
+  --darkBlue: #252945;
+  --purple: #7c5dfa;
+  --lightPurple: #9277ff;
+  --green: #33d69f;
+  --orange: #ff8f00;
+  --red: #ec5757;
+
+  --clr-bckg: var(--grey);
+  --clr-text: var(--darkGrey);
+  --clr-header: var(--dark);
+  --clr-holder: var(--white);
+  --clr-input-border: #dfe3fa;
+}
+
+.dark-theme {
+  --clr-bckg: #141625;
+  --clr-text: var(--white);
+  --clr-header: var(--white);
+  --clr-holder: var(--dark);
+  --clr-input-border: var(--darkBlue);
+}
+
+body {
+  font-family: "Spartan";
+  font-size: 16px;
+  font-weight: 400;
+  background: var(--clr-bckg);
+  line-height: 1.7;
+}
+
+p {
+  font-size: 0.75rem;
+  color: var(--clr-text);
+}
+
+h1, h2, h3, h4 {
+  color: var(--clr-header);
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 1.25rem;
+}
+
+h2 {
+  font-size: 1.125rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+h4 {
+  font-size: 0.75rem;
+}
+
+/* breakpoints */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  } 
+}

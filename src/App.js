@@ -1,9 +1,17 @@
-import { useAppContext } from './context';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home, SingleInvoice } from './pages';
+import { Sidebar } from './components';
 
 const App = () => {
-  console.log(useAppContext());
-
-  return <h1>Invoice App</h1>
+  return (
+    <Router>
+      <Sidebar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/invoice/:id" element={<SingleInvoice />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
