@@ -1,7 +1,9 @@
 import Sidebar from './Sidebar';
-import SortInvoice from './home/sortInvoice';
+import FilterInvoice from './home/FilterInvoice';
+import Invoices from './home/Invoices';  
 
 export {
   Sidebar,
-  SortInvoice
+  FilterInvoice,
+  Invoices
 }

@@ -1,8 +1,16 @@
 import styled from 'styled-components';
+import { FilterInvoice, Invoices } from '../components';
 
 const Home = () => {
   return (
-    <Wrapper></Wrapper>
+    <Wrapper>
+      <section className="main-section">
+        <div className="main-container">
+          <FilterInvoice />
+          <Invoices />
+        </div>
+      </section>
+    </Wrapper>
   );
 }
 

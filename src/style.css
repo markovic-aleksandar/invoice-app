@@ -13,12 +13,15 @@
   --dark: #1e2139;
   --grey: #f8f8f8;
   --semiGrey: #f9fafe;
+  --greyBlue: #dfe3fa;
   --darkGrey: #888eb0;
   --darkBlue: #252945;
   --purple: #7c5dfa;
   --lightPurple: #9277ff;
   --green: #33d69f;
+  --lightGreen: rgba(51,214,159,.0571);
   --orange: #ff8f00;
+  --lightOrange: rgba(255,143,0,.0571);
   --red: #ec5757;
 
   --clr-bckg: var(--grey);
@@ -70,6 +73,82 @@ h4 {
   font-size: 0.75rem;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.btn {
+  display: inline-block;
+  font-family: "Spartan";
+  font-size: 12px;
+  font-weight: 700;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.btn-grey {
+  background: var(--semiGrey);
+  color: #7e88c3;
+}
+
+.btn-purple {
+  background: var(--purple);
+  color: var(--white);
+}
+
+.status-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+  width: 6.5rem;
+  padding: 0.625rem 0;
+  background: rgba(55, 59, 83, .0571);
+  color: var(--dark);
+  border-radius: 10px;
+}
+
+.status-label span {
+  width:8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dark);
+}
+
+.status-label.paid {
+  background: var(--lightGreen);
+  color: var(--green);
+}
+
+.status-label.paid span {
+  background: var(--green);
+}
+
+.status-label.pending {
+  background: var(--lightOrange);
+  color: var(--orange);
+}
+
+.status-label.pending span {
+  background: var(--orange);
+}
+
+.main-section {
+  padding-top: 4.5rem;
+}
+
+.main-container {
+  width: 90%;
+  max-width: 730px;
+  margin: 0 auto;
+}
+
 /* breakpoints */
 @media (min-width: 768px) {
   h1 {
@@ -79,4 +158,10 @@ h4 {
   h2 {
     font-size: 1.5rem;
   } 
+}
+
+@media (min-width: 1200px) {
+  .main-section {
+    padding: 5rem 0 0 6.4375rem;
+  }
 }

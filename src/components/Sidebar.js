@@ -6,7 +6,7 @@ import iconMoon from '../images/icon-moon.svg';
 import userAvatar from '../images/image-avatar.jpg';
 
 const Sidebar = () => {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light');
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -43,17 +43,7 @@ const Wrapper = styled.header`
   align-items: center;
   justify-content: space-between;
   background: var(--darkBlue);
-
-  @media (min-width: 1200px) {
-    top: 0;
-    left: 0;
-    width: 6.4375rem;
-    height: 100%;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 0 20px 20px 0;
-  }
+  z-index: 2;
 
   .logo-holder {
     position: relative;
@@ -65,11 +55,6 @@ const Wrapper = styled.header`
     justify-content: center;
     border-radius: 0 20px 20px 0;
     overflow: hidden;
-
-    @media (min-width: 1200px) {
-      width: 6.4375rem;
-      height: 6.4375rem;
-    }
 
     img {
       position: relative;
@@ -90,12 +75,6 @@ const Wrapper = styled.header`
     display: flex;
     height: 100%;
 
-    @media (min-width: 1200px) {
-      flex-direction: column;
-      width: 100%;
-      height: auto;
-    }
-
     .theme-toggle {
       display: flex;
       align-items: center;
@@ -110,15 +89,6 @@ const Wrapper = styled.header`
       img:hover {
         filter: brightness(0) invert(1);
       }
-
-      @media (min-width: 1200px) {
-        justify-content: center;
-        height: auto;
-        width: 100%;
-        padding: 2rem 0;
-        border: none;
-        border-bottom: 2px solid #494e6e;
-      }
     }
 
     .user-avatar {
@@ -126,18 +96,49 @@ const Wrapper = styled.header`
       align-items: center;
       height: 100%;
       padding: 0 2rem;
-      
-      @media (min-width: 1200px) {
-        justify-content: center;
-        height: auto;
-        width: 100%;
-        padding: 2rem 0;
-      }
 
       img {
         width: 2rem;
         height: 2rem;
         border-radius: 50%;
+      }
+    }
+  }
+
+  @media (min-width: 1200px) {
+    top: 0;
+    left: 0;
+    width: 6.4375rem;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 20px 20px 0;
+
+    .logo-holder {
+      width: 6.4375rem;
+      height: 6.4375rem;
+    }
+
+    .theme-user-holder {
+      flex-direction: column;
+      width: 100%;
+      height: auto;
+
+      .theme-toggle {
+        justify-content: center;
+        height: auto;
+        width: 100%;
+        padding: 2rem 0;
+        border: none;
+        border-bottom: 2px solid #494e6e;
+      }
+
+      .user-avatar {
+        justify-content: center;
+        height: auto;
+        width: 100%;
+        padding: 1.75rem 0;
       }
     }
   }
