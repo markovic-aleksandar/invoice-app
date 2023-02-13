@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { formatPrice } from '../../utils/helper';
 import iconArrowRight from '../../images/icon-arrow-right.svg';
 
 const Invoice = ({id, paymentDue, clientName, total, status}) => {
@@ -12,7 +13,7 @@ const Invoice = ({id, paymentDue, clientName, total, status}) => {
         <p>{clientName}</p>
       </div>
       <div className="invoice-paid-info">
-        <h3>{total}</h3>
+        <h3>{formatPrice(total)}</h3>
         <div>
           <div className={`status-label ${status}`}>
             <span></span>

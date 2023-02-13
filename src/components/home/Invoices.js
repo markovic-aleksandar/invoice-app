@@ -3,7 +3,7 @@ import { useAppContext } from '../../context';
 import Invoice from './Invoice';
 
 const Invoices = () => {
-  const {invoicesLoading, invoices} = useAppContext();
+  const {invoicesLoading, filteredInvoices} = useAppContext();
 
   if (invoicesLoading) {
     return <h1>Loading...</h1>
@@ -11,7 +11,7 @@ const Invoices = () => {
 
   return (
     <Wrapper>
-      {invoices.map(invoice => {
+      {filteredInvoices.map(invoice => {
         return <Invoice key={invoice.id} {...invoice} />
       })}
     </Wrapper>

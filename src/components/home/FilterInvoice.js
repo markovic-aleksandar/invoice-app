@@ -1,12 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
+import { useAppContext } from '../../context';
+import { getUniqueValues } from '../../utils/helper';
 import iconArrowDown from '../../images/icon-arrow-down.svg';
 import iconPlus from '../../images/icon-plus.svg';
 import iconCheck from '../../images/icon-check.svg';
 
 const FilterInvoice = () => {
+  const {invoices, filteredInvoices, updateFilter} = useAppContext();
   const [filterOpen, setFilterOpen] = useState(false);
 
+  // get uniqe invoice status
+  const statuses = getUniqueValues(invoices);
+
+  // hide filter
   const hideFilter = useCallback(e => {
     const target = e.target;
     if (filterOpen & !target.closest('.filter')) {
@@ -15,7 +22,7 @@ const FilterInvoice = () => {
   }, [filterOpen]);
 
   useEffect(() => {
-    // remove filter if is open
+    // hide filter if is open
     window.addEventListener('click', hideFilter);
 
     return () => {
@@ -27,7 +34,7 @@ const FilterInvoice = () => {
     <Wrapper>
       <div>
         <h1>Invoices</h1>
-        <p>There are 7 total invoices</p>
+        <p>There are {filteredInvoices.length} total invoices</p>
       </div>
       <div className="action-holder">
         <div className="filter">
@@ -36,27 +43,21 @@ const FilterInvoice = () => {
             <img src={iconArrowDown} alt="arrow down" />
           </div>
           <div className={`filter-select${filterOpen ? ' opened' : ''}`}>
-            <div>
-              <div className="checkbox">
-                <input type="checkbox" name="draft" id="draft" />
-                <span className="box"></span>
+            {statuses.length < 1 && <p>No invoices for filter</p>}
+            {statuses.map((status, index) => {
+              return <div key={index}>
+                <div className="checkbox">
+                  <input 
+                    type="checkbox" 
+                    name={status} 
+                    id={status} 
+                    onChange={updateFilter}
+                  />
+                  <span className="box"></span>
+                </div>
+                <label htmlFor={status}>{status}</label>
               </div>
-              <label htmlFor="draft">Draft</label>
-            </div>
-            <div>
-              <div className="checkbox">
-                <input type="checkbox" name="pending" id="pending" />
-                <span className="box"></span>
-              </div>
-              <label htmlFor="pending">Pending</label>
-            </div>
-            <div>
-              <div className="checkbox">
-                <input type="checkbox" name="paid" id="paid" />
-                <span className="box"></span>
-              </div>
-              <label htmlFor="paid">Paid</label>
-            </div>
+            })}
           </div>
         </div>
         <button type="button" className="btn btn-purple">
@@ -102,7 +103,7 @@ const Wrapper = styled.div`
 
   .filter-select {
     position: absolute;
-    top: 50px;
+    top: 40px;
     right: 0;
     display: flex;
     flex-direction: column;
@@ -161,6 +162,7 @@ const Wrapper = styled.div`
       flex: 1;
       font-size: 12px;
       font-weight: 700;
+      text-transform: capitalize;
       user-select: none;
     }
 
