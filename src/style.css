@@ -23,20 +23,37 @@
   --orange: #ff8f00;
   --lightOrange: rgba(255,143,0,.0571);
   --red: #ec5757;
+  --lightRed: #ff9797;
 
   --clr-bckg: var(--grey);
+  --clr-lightBckg: var(--semiGrey);
   --clr-text: var(--darkGrey);
   --clr-header: var(--dark);
   --clr-holder: var(--white);
+  --clr-darker: #373b53;
+  --clr-input: var(--white);
+  --clr-select: var(--white);
+  --clr-label: var(--black);
+  --clr-checkbox: var(--greyBlue);
   --clr-input-border: #dfe3fa;
+  --clr-shadow: 0 10px 20px rgba(72, 84, 159, 0.25);
+  --clr-aside: var(--white);
 }
 
 .dark-theme {
   --clr-bckg: #141625;
+  --clr-lightBckg: var(--darkBlue);
   --clr-text: var(--white);
   --clr-header: var(--white);
   --clr-holder: var(--dark);
+  --clr-darker: #0c0e16;
+  --clr-input: var(--dark);
+  --clr-select: var(--darkBlue);
+  --clr-label: var(--white);
+  --clr-checkbox: var(--dark);
   --clr-input-border: var(--darkBlue);
+  --clr-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  --clr-aside: #141625;
 }
 
 body {
@@ -78,10 +95,95 @@ img {
   height: auto;
 }
 
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  font-size: 0.6875rem;
+  color: var(--clr-text);
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group h4 {
+  color: var(--purple);
+}
+
+.form-control {
+  margin-top: 0.9375rem;
+}
+
+.form-control input {
+  width: 100%;
+  height: 3rem;
+  font-family: "Spartan";
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0 1.125rem;
+  color: var(--clr-label);
+  background: var(--clr-input);
+  border: 1px solid var(--clr-input-border);
+  border-radius: 5px;
+}
+
+.form-control input:disabled {
+  border: none;
+  color: var(--clr-text);
+  background: transparent;
+}
+
+.form-control input::-webkit-outer-spin-button,
+.form-control input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-control input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.625rem;
+}
+
+.form-control label {
+  font-size: 0.75rem;
+  color: var(--clr-text);
+}
+
+.form-label .form-error {
+  color: var(--red);
+  font-size: 0.625rem;
+  font-weight: 500;
+}
+
+
+.form-control-group {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+button {
+  display: inline-block;
+  font-family: "Spartan";
+  font-size: 0.75rem;
+  background: transparent;
+  border: none;
+}
+
+
 .btn {
   display: inline-block;
   font-family: "Spartan";
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   padding: 1rem 1.5rem;
   border: none;
@@ -90,12 +192,38 @@ img {
 }
 
 .btn-grey {
-  background: var(--semiGrey);
+  background: var(--clr-lightBckg);
   color: #7e88c3;
+}
+
+.dark-theme .btn-grey {
+  color: var(--white);
+}
+
+.btn-grey:hover {
+  background: #dfe3fa;
 }
 
 .btn-purple {
   background: var(--purple);
+  color: var(--white);
+}
+
+.btn-red {
+  background: var(--red);
+  color: var(--white);
+}
+
+.btn-red:hover {
+  background: var(--lightRed);
+}
+
+.btn-dark {
+  background: #373b53;
+  color: #888eb0;
+}
+
+.dark-theme .btn-dark {
   color: var(--white);
 }
 
@@ -139,13 +267,32 @@ img {
   background: var(--orange);
 }
 
+.status-label.draft {
+  background: rgba(55, 59, 83, .0571);
+  color: var(--dark);
+}
+
+.status-label.draft span {
+  background: var(--dark);
+}
+
+.dark-theme .status-label.draft {
+  background: rgba(223, 227, 250, .0571);
+  color: var(--white);
+}
+
+.dark-theme .status-label.draft span {
+  background: var(--white);
+}
+
 .main-section {
-  padding-top: 4.5rem;
+  padding: 6.25rem 0 7rem;
 }
 
 .main-container {
-  width: 90%;
-  max-width: 730px;
+  width: 100%;
+  max-width: calc(730px + (2 * 1.875rem));
+  padding: 0 1.875rem;
   margin: 0 auto;
 }
 
@@ -156,12 +303,21 @@ img {
   }
   
   h2 {
-    font-size: 1.5rem;
-  } 
+    font-size: 1.375rem;
+  }
+
+  .main-section {
+    padding: 8rem 0 3.5rem;
+  }
+
+  .form-control-group {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.625rem;
+  }
 }
 
 @media (min-width: 1200px) {
   .main-section {
-    padding: 5rem 0 0 6.4375rem;
+    padding: 4.5rem 0 3.5rem 6.4375rem;
   }
 }

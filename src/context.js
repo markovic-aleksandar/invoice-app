@@ -2,17 +2,21 @@ import { useEffect, createContext, useContext, useReducer } from 'react';
 import axios from 'axios';
 import reducer from './reducer';
 import * as actions from './actions';
+import { createInvoiceObj } from './utils/helper';
 
 const AppContext = createContext();
 
 const API_ENDPOINT = 'https://raw.githubusercontent.com/aebiz-aleksandar/api/main/invoices.json';
 
 const initState = {
-  invoicesLoading: false,
+  invoicesLoading: true,
   invoicesError: false,
   invoices: [],
   filteredInvoices: [],
+  currentInvoice: null,
   filterStatuses: [],
+  addEditBar: true,
+  deleteModal: false,
   theme: 'light'
 }
 
@@ -41,10 +45,54 @@ const AppProvider = ({children}) => {
     dispatch({type: actions.UPDATE_FILTER, payload: {name, checked}});
   }
 
+  // set current invoice
+  const setCurrentInvoice = invoice => {
+    dispatch({type: actions.SET_CURRENT_INVOICE, payload: invoice});
+  }
+
+  // toggle add edit bar
+  const toggleAddEditBar = () => {
+    dispatch({type: actions.TOGGLE_ADD_EDIT_BAR});
+  }
+
+  // toggle delete modal
+  const toggleDeleteModal = () => {
+    dispatch({type: actions.TOGGLE_DELETE_MODAL});
+  }
+
+  // add invoice
+  const addInvoice = (formData, itemsData) => {
+    const newInvoice = createInvoiceObj(formData, itemsData);
+    dispatch({type: actions.ADD_INVOICE, payload: newInvoice});
+  }
+
+  // edit current invoice
+  const editCurrentInvoice = (id, formData, itemsData) => {
+    const newInvoice = createInvoiceObj(formData, itemsData, id);
+    dispatch({type: actions.EDIT_INVOICE, payload: {id, newInvoice}});
+  }
+
+  // delete invoice
+  const deleteInvoice = id => {
+    dispatch({type: actions.DELETE_INVOICE, payload: id});
+  }
+
+  // add draft invoice
+  const addDraftInvoice = (formDate, itemsData) => {
+    const newInvoice = {...createInvoiceObj(formDate, itemsData), status: 'draft'};
+    dispatch({type: actions.ADD_DRAFT_INVOICE, payload: newInvoice});
+  }
+
+  // update status to "paid"
+  const updateStatus = id => {
+    dispatch({type: actions.UPDATE_STATUS, payload: id});
+  }
+
   // get invoices
   useEffect(() => {
     getInvoices(API_ENDPOINT);
   }, []);
+  
 
   // trigger filter invoices
   useEffect(() => {
@@ -53,7 +101,15 @@ const AppProvider = ({children}) => {
 
   return <AppContext.Provider value={{
     ...state,
-    updateFilter
+    updateFilter,
+    setCurrentInvoice,
+    toggleAddEditBar,
+    toggleDeleteModal,
+    addInvoice,
+    editCurrentInvoice,
+    deleteInvoice,
+    addDraftInvoice,
+    updateStatus
   }}>
     {children}
   </AppContext.Provider>

@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppContext } from '../../context';
+import useScreen from '../../useScreen';
 import { getUniqueValues } from '../../utils/helper';
 import iconArrowDown from '../../images/icon-arrow-down.svg';
 import iconPlus from '../../images/icon-plus.svg';
 import iconCheck from '../../images/icon-check.svg';
 
 const FilterInvoice = () => {
-  const {invoices, filteredInvoices, updateFilter} = useAppContext();
+  const {invoices, filteredInvoices, updateFilter, toggleAddEditBar} = useAppContext();
   const [filterOpen, setFilterOpen] = useState(false);
+  const isMobile = useScreen();
 
   // get uniqe invoice status
   const statuses = getUniqueValues(invoices);
@@ -21,8 +23,8 @@ const FilterInvoice = () => {
     }
   }, [filterOpen]);
 
+  // hide filter if is open
   useEffect(() => {
-    // hide filter if is open
     window.addEventListener('click', hideFilter);
 
     return () => {
@@ -34,12 +36,12 @@ const FilterInvoice = () => {
     <Wrapper>
       <div>
         <h1>Invoices</h1>
-        <p>There are {filteredInvoices.length} total invoices</p>
+        <p>{isMobile ? `${filteredInvoices.length} invoices` : `There are ${filteredInvoices.length} total invoices`}</p>
       </div>
       <div className="action-holder">
         <div className="filter">
           <div className="filter-label" onClick={() => setFilterOpen(!filterOpen)}>
-            Filter by status
+            {isMobile ? 'Filter' : 'Filter by status'}
             <img src={iconArrowDown} alt="arrow down" />
           </div>
           <div className={`filter-select${filterOpen ? ' opened' : ''}`}>
@@ -60,9 +62,9 @@ const FilterInvoice = () => {
             })}
           </div>
         </div>
-        <button type="button" className="btn btn-purple">
+        <button type="button" className="btn btn-purple" onClick={toggleAddEditBar}>
           <span><img src={iconPlus} alt="plus icon" /></span>
-          New Invoice
+          {isMobile ? 'New' : 'New Invoice'}
         </button>
       </div>
     </Wrapper>
@@ -73,7 +75,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 1.75rem 0;
+  margin-bottom: 1.75rem;
   
   h1 {
     margin-bottom: 0.625rem;
@@ -109,14 +111,14 @@ const Wrapper = styled.div`
     flex-direction: column;
     gap: 12px;
     width: 11.875rem;
-    background: var(--white);
+    background: var(--clr-select);
     padding: 1.5rem;
     border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(72, 84, 159, 0.25);
+    box-shadow: var(--clr-shadow);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease-in-out;
-
+    
     &.opened {
       opacity: 1;
       pointer-events: auto;
@@ -126,24 +128,24 @@ const Wrapper = styled.div`
       display: flex;
       align-items: center;
       gap: 10px;
-
+      
       &:hover {
         .checkbox {
           border-color: var(--purple);
         }
       }
     }
-
+    
     .checkbox {
       position: relative;
       width: 1.125rem;
       height: 1.125rem;
-      background: var(--greyBlue);
-      border: 1px solid var(--greyBlue);
+      background: var(--clr-checkbox);
+      border: 1px solid var(--clr-checkbox);
       border-radius: 2px;
       overflow: hidden;
     }
-
+    
     input {
       position: absolute;
       top: 0;
@@ -152,6 +154,7 @@ const Wrapper = styled.div`
       height: 100%;
       opacity: 0;
       z-index: 1;
+      cursor: pointer;
 
       &:checked + .box {
         opacity: 1;
@@ -162,8 +165,10 @@ const Wrapper = styled.div`
       flex: 1;
       font-size: 12px;
       font-weight: 700;
+      color: var(--clr-label);
       text-transform: capitalize;
       user-select: none;
+      cursor: pointer;
     }
 
     .box {

@@ -1,14 +1,17 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { formatPrice } from '../../utils/helper';
+import { formatPrice, formatDate } from '../../utils/helper';
 import iconArrowRight from '../../images/icon-arrow-right.svg';
 
-const Invoice = ({id, paymentDue, clientName, total, status}) => {
+const Invoice = ({id, paymentDue, clientName, total, status}) => { 
+  const navigation = useNavigate();
+  
   return (
-    <Wrapper>
+    <Wrapper onClick={() => navigation(`/invoice/${id}`)}>
       <div className="invoice-global-info">
         <div>
           <h4>#{id}</h4>
-          <p>Due {paymentDue}</p>
+          <p className="due-date">Due {formatDate(paymentDue)}</p>
         </div>
         <p>{clientName}</p>
       </div>
@@ -48,6 +51,10 @@ const Wrapper = styled.article`
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
+    }
+
+    .due-date {
+      font-size: 11px;
     }
   }
 

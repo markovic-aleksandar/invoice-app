@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import logo from '../images/logo.svg';
-import iconSun from '../images/icon-sun.svg';
-import iconMoon from '../images/icon-moon.svg';
+import { logo, iconSun, iconMoon } from '../utils/constants';
 import userAvatar from '../images/image-avatar.jpg';
 
 const Sidebar = () => {
+  const navigation = useNavigate();
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -18,12 +18,13 @@ const Sidebar = () => {
 
   return (
     <Wrapper>
-      <div className="logo-holder">
-        <img src={logo} alt="logo" className="logo" />
+      <div className="logo-holder" onClick={() => navigation('/')}>
+        {logo}
       </div>
       <div className="theme-user-holder">
         <div className="theme-toggle" onClick={() => setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark')}>
-          <img src={theme === 'dark' ? iconSun : iconMoon} alt="theme icon" /> 
+          {/* <img src={theme === 'dark' ? iconSun : iconMoon} alt="theme icon" />  */}
+          {theme === 'dark' ? iconSun : iconMoon}
         </div>
         <div className="user-avatar">
           <img src={userAvatar} alt="user avatar" />
@@ -55,8 +56,9 @@ const Wrapper = styled.header`
     justify-content: center;
     border-radius: 0 20px 20px 0;
     overflow: hidden;
+    cursor: pointer;
 
-    img {
+    svg {
       position: relative;
     }
     
@@ -68,6 +70,11 @@ const Wrapper = styled.header`
       height: 50%;
       background: var(--lightPurple);
       border-radius: 20px 0 0 0;
+      transition: all 0.2s ease-in-out;
+    }
+
+    &:hover::before {
+      height: 90%;
     }
   }
 
@@ -79,14 +86,14 @@ const Wrapper = styled.header`
       display: flex;
       align-items: center;
       height: 100%;
-      padding: 0 2rem;
+      padding: 0 1.875rem;
       border-right: 1px solid #494e6e;
 
-      img {
+      svg {
         cursor: pointer;
       }
 
-      img:hover {
+      svg:hover {
         filter: brightness(0) invert(1);
       }
     }
@@ -95,7 +102,7 @@ const Wrapper = styled.header`
       display: flex;
       align-items: center;
       height: 100%;
-      padding: 0 2rem;
+      padding: 0 1.875rem;
 
       img {
         width: 2rem;
