@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+import  useOpenHide from '../useOpenHide';
 import { iconArrowDown } from '../utils/constants';
 
 const CustomSelect = ({values, value, name}) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const {isOpen, setIsOpen} = useOpenHide('.add-edit-bar', 'select-custom');
   const [currentValue, setCurrentValue] = useState(values.find(valueItem => valueItem.value === value.value).label);
 
   const handleSelect = e => {
@@ -11,23 +12,9 @@ const CustomSelect = ({values, value, name}) => {
     setCurrentValue(value);
   }
 
-  useEffect(() => {
-    const hideSelect = e => {
-      if (isOpen && !e.target.closest('.select-value')) {
-        setIsOpen(false);
-      }
-    }
-
-    window.addEventListener('click', hideSelect);
-
-    return () => {
-      window.removeEventListener('click', hideSelect);
-    }
-  }, [isOpen]);
-
   return (
-    <Wrapper onClick={() => setIsOpen(!isOpen)}>
-      <div className="select-value">
+    <Wrapper className="select-custom">
+      <div className="select-value" onClick={() => setIsOpen(!isOpen)}>
         <span>{currentValue}</span>
         {iconArrowDown}
       </div>

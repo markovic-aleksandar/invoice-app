@@ -144,7 +144,7 @@ const AddEditForm = ({formData, handleFormData}) => {
             <span className="form-error"></span>
           </div>
           <input type="text" style={{display: 'none'}} />
-          <CustomCalendar invoiceDate={invoiceDate} paymentTerms={paymentTerms} name='invoiceDate' />
+          <CustomCalendar invoiceDate={invoiceDate} name='invoiceDate' />
         </div>
         <div className="form-control" data-control="select">
           <div className="form-label">

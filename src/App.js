@@ -5,12 +5,12 @@ import { Sidebar, AddEditBar, DeleteModal } from './components';
 import { useAppContext } from './context';
 
 const App = () => {
-  const {addEditBar, deleteModal} = useAppContext();
+  const {deleteModal} = useAppContext();
 
   return (
     <Router>
       <Sidebar />
-      {addEditBar && <AddEditBar />}
+      <AddEditBar />
       {deleteModal && <DeleteModal />}
       <Routes>
         <Route path="/" element={<Home />} />

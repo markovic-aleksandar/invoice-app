@@ -1,22 +1,23 @@
 import { useState } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { formatSingleDate, calculatePaymentPeriod } from '../utils/helper';
+import { formatSingleDate } from '../utils/helper';
+import useOpenHide from '../useOpenHide';
 import { iconArrowLeft, iconArrowRight, iconCalendar } from '../utils/constants';
 
-const CustomCalendar = ({invoiceDate:{value: invoiceDate}, paymentTerms: {value: paymentPeriod}, name}) => {
-  const calculatedPaymentPeriod = calculatePaymentPeriod(invoiceDate, paymentPeriod);
+const CustomCalendar = ({invoiceDate:{value: invoiceDate}, name}) => {
   const [period, setPeriod] = useState({
-    month: calculatedPaymentPeriod.getMonth(),
-    year: calculatedPaymentPeriod.getFullYear(),
+    month: new Date(invoiceDate).getMonth(),
+    year: new Date(invoiceDate).getFullYear(),
   });
+  const {isOpen, setIsOpen} = useOpenHide('.add-edit-bar', 'calendar-custom');
 
 
   const changeCalendarDate = type => {
     if (type === 'dec') {
       setPeriod(prevValue => {
         let tempValue = {...prevValue};
-        tempValue = {...tempValue, month:  tempValue.month - 1}
+        tempValue = {...tempValue, month: tempValue.month - 1}
         if (tempValue.month < 0) {
           tempValue = {month: 11, year: tempValue.year - 1};
         }
@@ -28,7 +29,7 @@ const CustomCalendar = ({invoiceDate:{value: invoiceDate}, paymentTerms: {value:
     if (type === 'inc') {
       setPeriod(prevValue => {
         let tempValue = {...prevValue};
-        tempValue = {...tempValue, month:  tempValue.month + 1}
+        tempValue = {...tempValue, month: tempValue.month + 1}
         if (tempValue.month > 11) {
           tempValue = {month: 0, year: tempValue.year + 1};
         }
@@ -39,17 +40,17 @@ const CustomCalendar = ({invoiceDate:{value: invoiceDate}, paymentTerms: {value:
   }
   
   return (
-    <Wrapper>
-      <div className="calendar-value">
-        <span>{moment(calculatedPaymentPeriod).format('DD MMM YYYY')}</span>
+    <Wrapper className="calendar-custom">
+      <div className="calendar-value" onClick={() => setIsOpen(!isOpen)}>
+        <span>{moment(invoiceDate).format('DD MMM YYYY')}</span>
         {iconCalendar}
       </div>
-      <div className="calendar-holder">
+      <div className={`calendar-holder${ isOpen ? ' active' : '' }`}>
         <div className="calendar-holder-top">
           <button type="button" onClick={() => changeCalendarDate('dec')}>
             {iconArrowLeft}
           </button>
-          <h4>{moment(calculatePaymentPeriod(`${period.year}-${period.month + 1}-${new Date(invoiceDate).getDate()}`, paymentPeriod)).format('MMM YYYY')}</h4>
+          <h4>{moment(new Date(`${period.year}-${period.month + 1}-${new Date(invoiceDate).getDate()}`)).format('MMM YYYY')}</h4>
           <button type="button" onClick={() => changeCalendarDate('inc')}>
             {iconArrowRight}
           </button>
@@ -100,6 +101,14 @@ const Wrapper = styled.div`
     box-shadow: var(--clr-shadow);
     border-radius: 10px;
     z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+
+    &.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
     &-top {
       display: flex;

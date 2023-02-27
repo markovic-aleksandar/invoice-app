@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import AddEditForm from './AddEditForm';
 import AddEditItems from './AddEditItems';
 import { useAppContext } from '../context';
+import { createAddEditFormObj } from '../utils/helper';
 
 const AddEditBar = () => {
   const {
@@ -13,58 +14,8 @@ const AddEditBar = () => {
     editCurrentInvoice,
     addDraftInvoice
   } = useAppContext();
-  const [formData, setFormData] = useState({
-    senderAddress: {
-      value: currentInvoice?.senderAddress.street || '',
-      error: false
-    },
-    senderCity: {
-      value: currentInvoice?.senderAddress.city || '',
-      error: false
-    },
-    senderPostCode: {
-      value: currentInvoice?.senderAddress.postCode || '',
-      error: false
-    },
-    senderCountry: {
-      value: currentInvoice?.senderAddress.country || '',
-      error: false
-    },
-    clientName: {
-      value: currentInvoice?.clientName || '',
-      error: false
-    },
-    clientEmail: {
-      value: currentInvoice?.clientEmail || '',
-      error: false
-    },
-    clientAddress: {
-      value: currentInvoice?.clientAddress.street || '',
-      error: false
-    },
-    clientCity: {
-      value: currentInvoice?.clientAddress.city || '',
-      error: false
-    },
-    clientPostCode: {
-      value: currentInvoice?.clientAddress.postCode || '',
-      error: false
-    },
-    clientCountry: {
-      value: currentInvoice?.clientAddress.country || '',
-      error: false
-    },
-    invoiceDate: {
-      value: currentInvoice?.createdAt || new Date().toISOString().split('T')[0]
-    },
-    paymentTerms: {
-      value: currentInvoice?.paymentTerms || 1,
-      error: false
-    },
-    projectDescription: {
-      value: currentInvoice?.description || ''
-    }
-  });
+  
+  const [formData, setFormData] = useState(createAddEditFormObj(currentInvoice));
 
   const [itemList, setItemList] = useState(
     currentInvoice?.items.map(item => ({...item, error: false})) 
@@ -196,6 +147,10 @@ const AddEditBar = () => {
       }
     }
   }
+
+  useEffect(() => {
+    setFormData(createAddEditFormObj(currentInvoice));
+  }, [currentInvoice]);
 
   return (
     <Wrapper className={`${addEditBar ? 'add-edit-bar open' : 'add-edit-bar hide'}`} onClick={addEditBarClose}>

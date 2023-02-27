@@ -130,3 +130,22 @@ export const createInvoiceObj = (formData, itemsData, id) => {
   }
 }
 
+// create add edit form object
+export const createAddEditFormObj = currentInvoice => {
+  return {
+    senderAddress: {value: currentInvoice?.senderAddress.street || '', error: false},
+    senderCity: {value: currentInvoice?.senderAddress.city || '', error: false},
+    senderPostCode: {value: currentInvoice?.senderAddress.postCode || '', error: false},
+    senderCountry: {value: currentInvoice?.senderAddress.country || '', error: false},
+    clientName: {value: currentInvoice?.clientName || '', error: false},
+    clientEmail: {value: currentInvoice?.clientEmail || '', error: false},
+    clientAddress: {value: currentInvoice?.clientAddress.street || '', error: false},
+    clientCity: {value: currentInvoice?.clientAddress.city || '', error: false},
+    clientPostCode: {value: currentInvoice?.clientAddress.postCode || '', error: false},
+    clientCountry: {value: currentInvoice?.clientAddress.country || '', error: false},
+    invoiceDate: {value: currentInvoice?.createdAt || new Date().toISOString().split('T')[0]},
+    paymentTerms: {value: currentInvoice?.paymentTerms || 1},
+    projectDescription: {value: currentInvoice?.description || '', error: false}
+  };
+}
+

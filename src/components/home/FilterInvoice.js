@@ -18,7 +18,7 @@ const FilterInvoice = () => {
   // hide filter
   const hideFilter = useCallback(e => {
     const target = e.target;
-    if (filterOpen & !target.closest('.filter')) {
+    if (filterOpen && !target.closest('.filter')) {
       setFilterOpen(false);
     }
   }, [filterOpen]);

@@ -15,7 +15,7 @@ const initState = {
   filteredInvoices: [],
   currentInvoice: null,
   filterStatuses: [],
-  addEditBar: true,
+  addEditBar: false,
   deleteModal: false,
   theme: 'light'
 }
