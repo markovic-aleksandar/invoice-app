@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppContext } from '../../context';
 import useScreen from '../../useScreen';
+import useOpenHide from '../../useOpenHide';
 import { getUniqueValues } from '../../utils/helper';
 import iconArrowDown from '../../images/icon-arrow-down.svg';
 import iconPlus from '../../images/icon-plus.svg';
@@ -9,28 +9,10 @@ import iconCheck from '../../images/icon-check.svg';
 
 const FilterInvoice = () => {
   const {invoices, filteredInvoices, updateFilter, toggleAddEditBar} = useAppContext();
-  const [filterOpen, setFilterOpen] = useState(false);
   const isMobile = useScreen();
-
+  const {isOpen, setIsOpen} = useOpenHide('body', 'filter');
   // get uniqe invoice status
   const statuses = getUniqueValues(invoices);
-
-  // hide filter
-  const hideFilter = useCallback(e => {
-    const target = e.target;
-    if (filterOpen && !target.closest('.filter')) {
-      setFilterOpen(false);
-    }
-  }, [filterOpen]);
-
-  // hide filter if is open
-  useEffect(() => {
-    window.addEventListener('click', hideFilter);
-
-    return () => {
-      window.removeEventListener('click', hideFilter);
-    }
-  }, [filterOpen, hideFilter]);
 
   return (
     <Wrapper>
@@ -39,12 +21,12 @@ const FilterInvoice = () => {
         <p>{isMobile ? `${filteredInvoices.length} invoices` : `There are ${filteredInvoices.length} total invoices`}</p>
       </div>
       <div className="action-holder">
-        <div className="filter">
-          <div className="filter-label" onClick={() => setFilterOpen(!filterOpen)}>
+        <div className={`filter${ isOpen ? ' opened' : '' }`}>
+          <div className="filter-label" onClick={() => setIsOpen(!isOpen)}>
             {isMobile ? 'Filter' : 'Filter by status'}
             <img src={iconArrowDown} alt="arrow down" />
           </div>
-          <div className={`filter-select${filterOpen ? ' opened' : ''}`}>
+          <div className="filter-select">
             {statuses.length < 1 && <p>No invoices for filter</p>}
             {statuses.map((status, index) => {
               return <div key={index}>
@@ -89,108 +71,116 @@ const Wrapper = styled.div`
 
   .filter {
     position: relative;
-  }
-
-  .filter-label {
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    user-select: none;
-    color: var(--clr-header);
-
-    img {
-      margin-left: 10px;
+  
+    .filter-label {
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      color: var(--clr-header);
+  
+      img {
+        margin-left: 10px;
+        transform: scaleY(1);
+        transition: all .3s ease;
+      }
     }
-  }
-
-  .filter-select {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 11.875rem;
-    background: var(--clr-select);
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: var(--clr-shadow);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease-in-out;
-    
-    &.opened {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    > div {
+  
+    .filter-select {
+      position: absolute;
+      top: 40px;
+      right: 0;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      flex-direction: column;
+      gap: 12px;
+      width: 11.875rem;
+      background: var(--clr-select);
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: var(--clr-shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-in-out;
+  
+      > div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        
+        &:hover {
+          .checkbox {
+            border-color: var(--purple);
+          }
+        }
+      }
       
-      &:hover {
-        .checkbox {
-          border-color: var(--purple);
+      .checkbox {
+        position: relative;
+        width: 1.125rem;
+        height: 1.125rem;
+        background: var(--clr-checkbox);
+        border: 1px solid var(--clr-checkbox);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      
+      input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: 1;
+        cursor: pointer;
+  
+        &:checked + .box {
+          opacity: 1;
+        }
+      }
+  
+      label {
+        flex: 1;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--clr-label);
+        text-transform: capitalize;
+        user-select: none;
+        cursor: pointer;
+      }
+  
+      .box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--purple);
+        border: 1px solid var(--purple);
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+  
+        &::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 10px;
+          height: 10px;
+          background: url(${iconCheck}) no-repeat center center/contain;
         }
       }
     }
-    
-    .checkbox {
-      position: relative;
-      width: 1.125rem;
-      height: 1.125rem;
-      background: var(--clr-checkbox);
-      border: 1px solid var(--clr-checkbox);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    
-    input {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      z-index: 1;
-      cursor: pointer;
 
-      &:checked + .box {
-        opacity: 1;
+    &.opened {
+      .filter-label img {
+        transform: scaleY(-1);
       }
-    }
 
-    label {
-      flex: 1;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--clr-label);
-      text-transform: capitalize;
-      user-select: none;
-      cursor: pointer;
-    }
-
-    .box {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--purple);
-      border: 1px solid var(--purple);
-      opacity: 0;
-      transition: all 0.2s ease-in-out;
-
-      &::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 10px;
-        height: 10px;
-        background: url(${iconCheck}) no-repeat center center/contain;
+      .filter-select {
+        opacity: 1;
+        pointer-events: auto;
       }
     }
   }

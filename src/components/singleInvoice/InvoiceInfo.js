@@ -47,7 +47,7 @@ const InvoiceInfo = (props) => {
           </div>
           <div>
             <p>Bill To</p>
-            <h3>{clientName}</h3>
+            <h3 className="client-name">{clientName}</h3>
             <ul>
               {clientAddressItems.map((item, index) => {
                 return <li key={index}>{item}</li>
@@ -68,7 +68,7 @@ const InvoiceInfo = (props) => {
 
 const Wrapper = styled.div`
   background: var(--clr-holder);
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 10px 10px -10px rgba(72, 84, 159, 0.1);
   border-radius: 10px;
   
@@ -115,6 +115,10 @@ const Wrapper = styled.div`
     }
   }
 
+  @media (min-width: 576px) {
+    padding: 1.5rem;
+  }
+
   @media (min-width: 768px) {
     .invoice-mark {
       flex-direction: row;
@@ -128,6 +132,14 @@ const Wrapper = styled.div`
 
       .date-bill-info {
         gap: 5rem;
+      }
+
+      .client-name {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 1.3;
       }
     }
   }

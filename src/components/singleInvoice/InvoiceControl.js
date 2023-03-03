@@ -31,7 +31,7 @@ const InvoiceControl = ({id, status}) => {
 
 const Wrapper = styled.header`
   background: var(--clr-holder);
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 10px 10px -10px rgba(72, 84, 159, 0.1);
   border-radius: 10px;
   margin-bottom: 1.5rem;
@@ -57,6 +57,10 @@ const Wrapper = styled.header`
     button:not(:first-child) {
       margin-left: 15px;
     }
+  }
+
+  @media (min-width: 576px) {
+    padding: 1.5rem;
   }
 
   @media (min-width: 768px) {

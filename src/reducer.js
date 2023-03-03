@@ -10,8 +10,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       invoicesLoading: false,
-      invoices: invoices,
-      filteredInvoices: invoices
+      invoices: invoices
     };
   }
 
@@ -32,7 +31,6 @@ const reducer = (state, action) => {
   }
 
   if (action.type === actions.FILTER_INVOICES) {
-
     const {invoices, filterStatuses} = state;
     let tempInvoices = [...invoices];
 
@@ -57,21 +55,17 @@ const reducer = (state, action) => {
 
   if (action.type === actions.ADD_INVOICE) {
     const invoice = action.payload;
-
     const invoices = [...state.invoices, invoice];
-
     
     return {
       ...state,
       invoices,
-      filteredInvoices: invoices,
       addEditBar: false
     };
   }
 
   if (action.type === actions.EDIT_INVOICE) {
     const {id, newInvoice} = action.payload;
-    
     const editedInvoices = state.invoices.map(invoice => {
       if (invoice.id === id) {
         return newInvoice;
@@ -82,9 +76,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       invoices: editedInvoices,
-      filteredInvoices: editedInvoices,
-      addEditBar: false,
-      editInvoice: null
+      addEditBar: false
     };
   }
 
@@ -94,7 +86,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       invoices,
-      filteredInvoices: invoices,
       currentInvoice: null,
       deleteModal: false
     }
@@ -102,13 +93,11 @@ const reducer = (state, action) => {
 
   if (action.type === actions.ADD_DRAFT_INVOICE) {
     const invoice = action.payload;
-
     const invoices = [...state.invoices, invoice];
 
     return {
       ...state,
       invoices,
-      filteredInvoices: invoices,
       addEditBar: false
     }
   }
@@ -123,8 +112,7 @@ const reducer = (state, action) => {
 
     return {
       ...state,
-      invoices: editedInvoices,
-      filteredInvoices: editedInvoices
+      invoices: editedInvoices
     };
   }
 

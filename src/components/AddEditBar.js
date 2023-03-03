@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import AddEditForm from './AddEditForm';
 import AddEditItems from './AddEditItems';
@@ -6,6 +6,7 @@ import { useAppContext } from '../context';
 import { createAddEditFormObj } from '../utils/helper';
 
 const AddEditBar = () => {
+  const aside = useRef();
   const {
     addEditBar, 
     currentInvoice, 
@@ -15,12 +16,8 @@ const AddEditBar = () => {
     addDraftInvoice
   } = useAppContext();
   
-  const [formData, setFormData] = useState(createAddEditFormObj(currentInvoice));
-
-  const [itemList, setItemList] = useState(
-    currentInvoice?.items.map(item => ({...item, error: false})) 
-    || 
-    [{name: 'New Item', quantity: 1, price: 0, total: 0, error: false}]);
+  const [formData, setFormData] = useState(createAddEditFormObj(currentInvoice).formData);
+  const [itemList, setItemList] = useState(createAddEditFormObj(currentInvoice).itemList);
 
   // handle add edit bar close
   const addEditBarClose = e => {
@@ -104,13 +101,26 @@ const AddEditBar = () => {
     for (let data in formData) {
       if (!formData[data].value) {
         setFormData(prevValue => {
-          return {...prevValue, [data]: {...prevValue[data], error: true}};
+          return {...prevValue, [data]: {...prevValue[data], error: 'can\'t be empty'}};
         });
         errors ++;
       } else {
         setFormData(prevValue => {
           return {...prevValue, [data]: {...prevValue[data], error: false}};
         });
+      }
+
+      // validate if property is email type
+      if (formData[data].value && data.toLowerCase().includes('email')) {
+        const regex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'ig');
+        const match = formData[data].value.match(regex);
+
+        if (!match) {
+          setFormData(prevValue => {
+            return {...prevValue, [data]: {...prevValue[data], error: 'email is not valid'}};
+          });
+          errors ++;
+        }
       }
     }
 
@@ -147,14 +157,16 @@ const AddEditBar = () => {
       }
     }
   }
-
+  
   useEffect(() => {
-    setFormData(createAddEditFormObj(currentInvoice));
+    setFormData(createAddEditFormObj(currentInvoice).formData);
+    setItemList(createAddEditFormObj(currentInvoice).itemList);
+    aside.current.scrollTo(0, 0);
   }, [currentInvoice]);
 
   return (
     <Wrapper className={`${addEditBar ? 'add-edit-bar open' : 'add-edit-bar hide'}`} onClick={addEditBarClose}>
-      <aside>
+      <aside ref={aside}>
         <div>
           <h2>{currentInvoice ? `Edit #${currentInvoice.id}` : 'New Invoice'}</h2>
           <AddEditForm formData={formData} handleFormData={handleFormData} />
@@ -208,7 +220,7 @@ const Wrapper = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 1;
-    transition: all 0.4s ease-in-out;
+    transition: left 0.4s ease-in-out;
     
     > div {
       padding: 1.875rem 0.9375rem 6rem;

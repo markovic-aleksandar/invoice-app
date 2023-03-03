@@ -1,12 +1,18 @@
 import styled from 'styled-components';
 import { useAppContext } from '../../context';
 import Invoice from './Invoice';
+// import EmptyContent from '../EmptyContent';
+import { Loader, EmptyContent } from '../index';
 
 const Invoices = () => {
   const {invoicesLoading, filteredInvoices} = useAppContext();
 
   if (invoicesLoading) {
-    return <h1>Loading...</h1>
+    return <Loader />
+  }
+
+  if (filteredInvoices.length < 1) {
+    return <EmptyContent />
   }
 
   return (

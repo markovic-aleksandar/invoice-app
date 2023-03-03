@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { InvoiceControl, InvoiceInfo } from '../components';
+import { Loader, InvoiceControl, InvoiceInfo } from '../components';
 import { useAppContext } from '../context';
 import iconArrowLeft from '../images/icon-arrow-left.svg';
 
@@ -20,18 +20,33 @@ const SingleInvoice = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // remove current invoice by clicking on back browser arrow
+  useEffect(() => {
+    window.addEventListener('popstate', () => setCurrentInvoice(null));
+  }, [setCurrentInvoice]);
+
   useEffect(() => {
     // get current invoice
     const currnetInvoice = invoices.find(invoice => invoice.id === id);
 
     // set current invoice
     setCurrentInvoice(currnetInvoice);
+
+    // eslint-disable-next-line
   }, [invoices, id]);
 
   if (invoicesLoading) {
-    return <h1>Loading...</h1>
+    return (
+      <Wrapper>
+        <section className="main-section">
+          <div className="main-container">
+            <Loader />
+          </div>
+        </section>  
+      </Wrapper>
+    )
   }
-
+  
   const invoice = invoices.find(invoice => invoice.id === id);
 
   return (

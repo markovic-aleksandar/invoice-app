@@ -92,12 +92,16 @@ const AppProvider = ({children}) => {
   useEffect(() => {
     getInvoices(API_ENDPOINT);
   }, []);
-  
 
   // trigger filter invoices
   useEffect(() => {
     dispatch({type: actions.FILTER_INVOICES});
-  }, [state.filterStatuses]);
+  }, [state.invoices, state.filterStatuses]);
+
+  // update filterd invoices & save to local storage
+  // useEffect(() => {
+
+  // }, [state.invoices]);
 
   return <AppContext.Provider value={{
     ...state,

@@ -292,11 +292,17 @@ button {
 .main-container {
   width: 100%;
   max-width: calc(730px + (2 * 1.875rem));
-  padding: 0 1.875rem;
+  padding: 0 0.9375rem;
   margin: 0 auto;
 }
 
 /* breakpoints */
+@media (min-width: 576px) {
+  .main-container {
+    padding: 0 1.875rem;
+  }
+}
+
 @media (min-width: 768px) {
   h1 {
     font-size: 2rem;
