@@ -90,7 +90,12 @@ const AppProvider = ({children}) => {
 
   // get invoices
   useEffect(() => {
-    getInvoices(API_ENDPOINT);
+    const storageInvoices = localStorage.getItem('invoices');
+    if (storageInvoices) {
+      dispatch({type: actions.FETCH_INVOICES_SUCCESS, payload: JSON.parse(storageInvoices)});
+    } else {
+      getInvoices(API_ENDPOINT);
+    }
   }, []);
 
   // trigger filter invoices
@@ -98,10 +103,10 @@ const AppProvider = ({children}) => {
     dispatch({type: actions.FILTER_INVOICES});
   }, [state.invoices, state.filterStatuses]);
 
-  // update filterd invoices & save to local storage
-  // useEffect(() => {
-
-  // }, [state.invoices]);
+  // save to local storage
+  useEffect(() => {
+    localStorage.setItem('invoices', JSON.stringify(state.invoices));
+  }, [state.invoices]);
 
   return <AppContext.Provider value={{
     ...state,

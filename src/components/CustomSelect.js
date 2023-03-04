@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import  useOpenHide from '../useOpenHide';
 import { iconArrowDown } from '../utils/constants';
 
 const CustomSelect = ({values, value, name}) => {
   const {isOpen, setIsOpen} = useOpenHide('.add-edit-bar', 'select-custom');
-  const [currentValue, setCurrentValue] = useState(values.find(valueItem => valueItem.value === value.value).label);
+  const [currentValue, setCurrentValue] = useState(null);
 
   const handleSelect = e => {
     const value = e.currentTarget.textContent.trim();
     setCurrentValue(value);
   }
+
+  useEffect(() => {
+    setCurrentValue(values.find(valueItem => valueItem.value === value.value).label);
+  }, [values, value]);
 
   return (
     <Wrapper className="select-custom">
